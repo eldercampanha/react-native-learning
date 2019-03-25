@@ -1,0 +1,3 @@
+rootProject.name = 'insights'
+
+include ':app'
