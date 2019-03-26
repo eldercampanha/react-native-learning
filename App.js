@@ -6,44 +6,81 @@
  * @flow
  */
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import React, { Component } from 'react';
+import { Platform, StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import PlacesList from './src/components/PlacesList/PlacesList'
+import PlacesInput from './src/components/PlacesInput/PlacesInput'
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
+const marginTop = Platform.select({
+  ios: 50,
+  android: 15,
 });
 
-type Props = {};
-export default class App extends Component<Props> {
+export default class App extends Component {
+
+  state = {
+    places: []
+  }
+
+  onPlaceAddedHandler = placeName => {
+    this.setState(prevState => {
+      return {
+        places: prevState.places.concat(
+          { 
+            // Flat List requires a string key
+            key: Math.random().toString(), 
+            value: placeName
+          })
+      };
+    });
+  }
+
+  onPlaceDeleteHandler = key => {
+    this.setState( prevState => {
+      return {
+        places: prevState.places.filter( (place) => {
+          return place.key !== key
+        })
+      }
+    })
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
+        <PlacesInput
+          style={styles.inputContainer}
+          onPlaceAdded={this.onPlaceAddedHandler}
+        />
+        <PlacesList
+          style={styles.listContainer}
+          places={this.state.places}
+          onItemDeleted={this.onPlaceDeleteHandler}
+        />
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
-    justifyContent: 'center',
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingTop: marginTop,
+    justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+  inputContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+  listContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  }
 });

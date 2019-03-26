@@ -6,7 +6,7 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
     "lint": "eslint .",
-    "ios": "react-native run-ios",
+    "ios": "react-native run-ios --simulator=\"iPhone X 12.1\"",
     "android": "react-native run-android"
   },
   "dependencies": {
