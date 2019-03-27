@@ -12,58 +12,30 @@ import PlacesList from './src/components/PlacesList/PlacesList'
 import PlacesInput from './src/components/PlacesInput/PlacesInput'
 import placeImage from './src/assets/beautiful-place.jpg'
 import PlaceDetails from './src/components/PlacesDetails/PlacesDetails'
+import { connect } from 'react-redux'
+import { addPlace, deletePlace, selectPlace, deselectPlace} from './src/store/actions/index'
 
 const marginTop = Platform.select({
   ios: 50,
   android: 15,
 });
 
-export default class App extends Component {
-
-  state = {
-    places: [],
-    selectedPlace: null
-  }
+class App extends Component {
 
   onPlaceAddedHandler = placeName => {
-    this.setState(prevState => {
-      return {
-        places: prevState.places.concat(
-          {
-            // Flat List requires a string key
-            key: Math.random().toString(),
-            name: placeName,
-            image: {
-              uri: "https://helpx.adobe.com/in/stock/how-to/visual-reverse-image-search/_jcr_content/main-pars/image.img.jpg/visual-reverse-image-search-v2_1000x560.jpg"
-            }
-          })
-      };
-    });
+   this.props.onAddPlace(placeName);
   }
 
   onPlaceDeleteHandler = () => {
-    this.setState(prevState => {
-      return {
-        places: prevState.places.filter((place) => {
-          return prevState.selectedPlace.key !== place.key
-        }),
-        selectedPlace: null
-      }
-    })
+    this.props.onDeletePlace()
   }
 
   onModalCloseHandler = () => {
-    this.setState({ selectedPlace: null})
+    this.props.onDeselectPlace()
   }
 
   onPlaceSelectedHandler = key => {
-    this.setState(prevState => {
-      return {
-        selectedPlace: prevState.places.find((place) => {
-          return place.key === key
-        })
-      }
-    })
+    this.props.onSelectPlace(key)
   }
 
   render() {
@@ -72,7 +44,7 @@ export default class App extends Component {
         <PlaceDetails
           onItemClosed={this.onModalCloseHandler}
           onItemDeleted={this.onPlaceDeleteHandler}
-          selectedPlace={this.state.selectedPlace}
+          selectedPlace={this.props.selectedPlace}
         />
         <PlacesInput
           style={styles.inputContainer}
@@ -80,7 +52,7 @@ export default class App extends Component {
         />
         <PlacesList
           style={styles.listContainer}
-          places={this.state.places}
+          places={this.props.places}
           onItemSelected={this.onPlaceSelectedHandler}
         />
       </View>
@@ -110,3 +82,21 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   }
 });
+
+const mapStateToProps = state => {
+  return {
+    places: state.places.places,
+    selectedPlace: state.places.selectedPlace
+  };
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onAddPlace: name => dispatch(addPlace(name)),
+    onDeletePlace: () => dispatch(deletePlace()),
+    onSelectPlace: key => dispatch(selectPlace(key)),
+    onDeselectPlace: () => dispatch(deselectPlace())
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
