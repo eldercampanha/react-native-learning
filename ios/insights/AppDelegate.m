@@ -31,12 +31,4 @@
   return YES;
 }
 
-- (NSURL *)sourceURLForBridge:(RCTBridge *)bridge {
-#ifdef DEBUG
-  return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-#else
-  return  [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
-#endif
-}
-
 @end
