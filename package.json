@@ -7,7 +7,7 @@
     "test": "jest",
     "lint": "eslint .",
     "ios": "react-native run-ios --simulator=\"iPhone X 12.1\"",
-    "android": "react-native run-android"
+    "android": "emulator @New_Galaxy_API_27 & react-native run-android"
   },
   "dependencies": {
     "react": "16.8.3",
