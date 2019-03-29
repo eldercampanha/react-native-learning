@@ -4,7 +4,8 @@ import SharePlaceScreen from './src/screens/SharePlace/SharePlace'
 import FindPlaceScreen from './src/screens/FindPlace/FindPlace'
 import { Provider } from 'react-redux';
 import configStore from './src/store/config';
-import placeDetailsScreen from './src/screens/PlacesDetails/PlacesDetails';
+import PlaceDetailsScreen from './src/screens/PlacesDetails/PlacesDetails';
+import SideDrawer from './src/screens/SideDrawer/SideDrawer';
 
 const store = configStore()
 
@@ -29,7 +30,13 @@ Navigation.registerComponent(
 );
 Navigation.registerComponent(
   "awesome-places.PlaceDetails", 
-  () => placeDetailsScreen,
+  () => PlaceDetailsScreen,
+  store,
+  Provider
+);
+Navigation.registerComponent(
+  "awesome-places.SideDrawer", 
+  () => SideDrawer,
   store,
   Provider
 );
