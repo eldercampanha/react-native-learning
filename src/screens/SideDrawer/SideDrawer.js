@@ -12,7 +12,7 @@ class SideDrawer extends Component {
         return(
             <View style={ 
                 [
-                    { width: Dimensions.get("window").width * 0.5 },
+                    { width: Dimensions.get("window").width * 0.8 },
                     styles.container
                 ]
             }>
